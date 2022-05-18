@@ -6,8 +6,7 @@ import plotly.express as px
 from dash.dependencies import Input, Output
 import pandas as pd
 
-# TODO
-# df = hier een csv inladen
+df = pd.read_csv("datacleaning/covid_land.csv", sep=";")
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
@@ -37,8 +36,7 @@ sidebar = html.Div(
         dbc.Nav(
             [
                 dbc.NavLink("Algemeen", href="/", active="exact"),
-                dbc.NavLink("Pagina 1", href="/pagina-1", active="exact"),
-                dbc.NavLink("Pagina 2", href="/pagina-2", active="exact"),
+                dbc.NavLink("Bedden", href="/pagina-1", active="exact"),
             ],
             vertical=True,
             pills=True,
@@ -65,16 +63,17 @@ def render_page_content(pathname):
         return [
             html.H1('Coronacijfers sinds 2020',
                     style={'textAlign': 'center'}),
-            # todo Doe hier iets met dcc.Graph om een graph te importeren
-            # dcc.Graph(id='bargraph',
-            #           figure=px.bar(df, barmode='group', x='Years',
-            #                         y=['Coronacijfers']))
+            dcc.Graph(figure=px.line(df, x='Date_of_publication', y=['Total_reported'],)),
+            dcc.Graph(figure=px.line(df, x='Date_of_publication', y=['Deceased'], ))
         ]
     elif pathname == "/pagina-1":
+        reported_fig = px.line(df, x='Date_of_publication', y=['Total_reported', 'IC_Bedden_COVID_Nederland', 'Kliniek_Bedden_Nederland'])
+        reported_fig.update_yaxes(range=[0, 50000])
         return [
-            html.H1('Pagina 1 met coronacijfers',
+            html.H1('Coronacijfers vs. Bedden',
                     style={'textAlign': 'center'}),
-            # todo Doe hier iets met dcc.Graph om een graph te importeren
+            dcc.Graph(figure=reported_fig),
+            dcc.Graph(figure=px.line(df, x='Date_of_publication', y=['Deceased', 'IC_Bedden_COVID_Nederland', 'Kliniek_Bedden_Nederland']))
         ]
     elif pathname == "/pagina-2":
         return [

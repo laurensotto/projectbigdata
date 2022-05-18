@@ -1,15 +1,17 @@
 import pandas as pd
 
-df = pd.read_csv("covid.csv", sep=";")
+df = pd.read_csv("../csvdata/covid.csv", sep=";")
 
 df_ggd = df.groupby(['Date_of_publication', 'Province', 'Municipal_health_service'])['Total_reported'].sum()
 df_provincie = df.groupby(['Date_of_publication', 'Province'])['Total_reported'].sum()
 df_land = df.groupby(['Date_of_publication'])['Total_reported'].sum()
+df_dood = df.groupby(['Date_of_publication'])['Deceased'].sum()
+df_land = pd.merge(df_land, df_dood, on='Date_of_publication')
 df_ggd.to_csv("covid_ggd.csv", sep=";")
 df_provincie.to_csv("covid_provincie.csv", sep=";")
 
 
-df_bedden = pd.read_csv("bedden.csv", sep=",")
+df_bedden = pd.read_csv("../csvdata/bedden.csv", sep=",")
 
 
 def reformatDate(string):
