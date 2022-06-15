@@ -141,18 +141,6 @@ def render_page_content(pathname):
             dcc.Graph(figure=figureCases),
             dcc.Graph(figure=figureDeaths),
         ]
-
-
-
-
-
-
-
-
-
-
-
-
     elif pathname == "/bedden-bezet-absolute":
         figureICBeds = px.line(
             df,
@@ -342,12 +330,14 @@ def render_page_content(pathname):
             dcc.Graph(figure=figureBeds),
         ]
     elif pathname == "/uitgaven-absolute":
-        figureSpending = px.line(
+        figureSpending = px.bar(
             df_zorg,
             x='Year',
             y=["Uitgaven VK in Pond",
                "Uitgaven VK in Euro",
                "Uitgaven NL in Euro"],
+            barmode="group",
+            height=800,
         )
         figureSpending.update_layout(
             yaxis_title="Uitgaven (B = miljard)",
@@ -374,12 +364,14 @@ def render_page_content(pathname):
                 figure=figureSpending),
         ]
     elif pathname == "/uitgaven-relative":
-        figureSpending = px.line(
+        figureSpending = px.bar(
             df_zorg,
             x='Year',
             y=["Uitgaven VK in Pond per inwoner",
                "Uitgaven VK in Euro per inwoner",
                "Uitgaven NL in Euro per inwoner"],
+            barmode="group",
+            height=800,
         )
         figureSpending.update_layout(
             yaxis_title="Uitgaven per inwoner",
