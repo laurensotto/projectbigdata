@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'rijkssans';
+    src: url('./assets/rijksoverheidsansheading-bold.ttf');
+}
+
+h1 {
+    font-family: "rijkssans";
+}
